@@ -10,11 +10,11 @@ function PoketmonCard({ url, imgStyle, pokeMonName, style }) {
   const [pokemonID, setPokemonID] = useState();
   const [speciesUrl, setSpeciesUrl] = useState();
   const [pokemonImage, setpokemonImage] = useState([]);
-
+  console.log(url);
   const navigate = useNavigate();
   const fetch = useFetch(`${url}`);
   const { data } = useAPI(["pokeInfo", pokeMonName], fetch);
-  console.log(data);
+
   useEffect(() => {
     setPokeType(data?.types);
     setSpeciesUrl(data?.species.url);
