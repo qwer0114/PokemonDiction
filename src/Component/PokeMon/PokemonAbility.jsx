@@ -1,7 +1,7 @@
 import useFetch from "../CustomHooks/useFetch";
 import { useAPI } from "../CustomHooks/useAPI";
 import { useEffect, useState } from "react";
-import { convertKorean } from "../../Utilities/convertKorea";
+import { convertKorean } from "../../Utilities/utilFunctions";
 
 function PokeMonAbility({ ability_url, text }) {
   const fetch = useFetch(`${ability_url}`);

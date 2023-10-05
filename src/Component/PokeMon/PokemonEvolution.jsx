@@ -13,7 +13,7 @@ function PokemonEvolution({ evolution_url }) {
   const { data } = useAPI(["pokemonSpeices", evolution_url], fetch);
   const [id, setIDs] = useState([]);
   const [name, setNames] = useState([]);
-  console.log(data);
+
   useEffect(() => {
     let url1 = data?.chain.species.url;
     let url2 = data?.chain.evolves_to[0]?.species.url;
@@ -34,9 +34,6 @@ function PokemonEvolution({ evolution_url }) {
     }
   }, [data]);
 
-  console.log(id);
-  console.log(name);
-
   return id.length !== 0 ? (
     <div className="">
       <div className="p-3 font-bold text-xl flex">
@@ -51,6 +48,7 @@ function PokemonEvolution({ evolution_url }) {
               pokeMonName={name[i]}
               style={style}
               imgStyle={"w-48 border-2"}
+              key={i}
             ></PoketmonCard>
           );
         })}

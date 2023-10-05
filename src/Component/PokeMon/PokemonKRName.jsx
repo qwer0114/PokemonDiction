@@ -2,7 +2,7 @@ import useFetch from "../CustomHooks/useFetch";
 import { useAPI } from "../CustomHooks/useAPI";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { convertKorean } from "../../Utilities/convertKorea";
+import { convertKorean } from "../../Utilities/utilFunctions";
 
 function PokemonKRName({ species_url, style }) {
   const fetch = useFetch(`${species_url}`);

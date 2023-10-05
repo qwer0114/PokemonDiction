@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { convertKorean } from "../../Utilities/convertKorea";
+import { convertKorean } from "../../Utilities/utilFunctions";
 import useFetch from "../CustomHooks/useFetch";
 import { useAPI } from "../CustomHooks/useAPI";
 import PokemonInfo from "./PokemonInfo";
@@ -15,7 +15,6 @@ function PokemonInfoCard({
 }) {
   const fetch = useFetch(`${species_url}`);
   const { data } = useAPI(["pokemonSpeices", species_url], fetch);
-  console.log(data);
   const [genera, setGenera] = useState();
   const [gender, setGender] = useState();
   const [description, setDescription] = useState();
