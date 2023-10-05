@@ -14,7 +14,9 @@ function Pokemons() {
   const fetch = useFetch(`${url}`);
   const { data, refetch } = useAPI(["pokemon"], fetch);
   const [pokemons, setPokemons] = useState();
-
+  let [input, setInput] = useState(null);
+  let [inputResult, setInputResult] = useState(["1"]);
+  const [totalPokemons, setTotalPokemons] = useState([]);
   const handleScroll = throttle(() => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
@@ -24,11 +26,13 @@ function Pokemons() {
     }
   }, 300);
 
+  // 스크롤 감지
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  // url 바뀌면 reFetch
   useEffect(() => {
     refetch();
   }, [url]);
@@ -39,27 +43,55 @@ function Pokemons() {
     } else {
       setPokemons(data?.results);
     }
+    setTotalPokemons([]);
+    setInput(null);
   }, [data]);
+
+  // input 변경 감지
+  useEffect(() => {
+    if (totalPokemons.length !== 0) {
+      console.log(totalPokemons);
+      setInputResult(
+        totalPokemons.filter((pokemon) => pokemon.krName.includes(input))
+      );
+    }
+  }, [input]);
 
   return (
     <>
-      <div>
-        <Navigation />
-        <div className="flex flex-wrap w-4/5 m-0 m-auto">
-          {pokemons !== undefined
-            ? pokemons.map((data, i) => {
-                return (
-                  <PoketmonCard
-                    url={data.url}
-                    key={i}
-                    imgStyle={"w-64 border-2"}
-                    pokeMonName={data.name}
-                    style={style}
-                  ></PoketmonCard>
-                );
-              })
-            : null}
-        </div>
+      <Navigation />
+      <input
+        type="text"
+        className="border-2"
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
+      ></input>
+      <div className="flex flex-wrap w-4/5 m-0 m-auto">
+        {pokemons !== undefined && input === null // input 값이 null 상태라면 모든 포케몬을 다 보여줌
+          ? pokemons.map((pokemon, i) => {
+              return (
+                <PoketmonCard
+                  url={pokemon.url}
+                  key={i}
+                  imgStyle={"w-64 border-2"}
+                  pokeMonName={pokemon.name}
+                  style={style}
+                  setTotalPokemons={setTotalPokemons}
+                ></PoketmonCard>
+              );
+            })
+          : inputResult.map((reuslt, i) => {
+              return (
+                <PoketmonCard
+                  url={reuslt.url}
+                  imgStyle={"w-64 border-2"}
+                  pokeMonName={reuslt.pokeMonName}
+                  style={style}
+                  key={i}
+                ></PoketmonCard>
+              );
+            })}
       </div>
     </>
   );

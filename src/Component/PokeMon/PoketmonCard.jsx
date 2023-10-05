@@ -5,7 +5,14 @@ import PokemonKRName from "./PokemonKRName";
 import { useNavigate } from "react-router";
 import useFetch from "../CustomHooks/useFetch";
 import { useAPI } from "../CustomHooks/useAPI";
-function PoketmonCard({ url, imgStyle, pokeMonName, style }) {
+function PoketmonCard({ url, imgStyle, pokeMonName, style, setTotalPokemons }) {
+  const pokeInfo = {
+    url: url,
+    imgStyle: imgStyle,
+    pokeMonName: pokeMonName,
+    style: style,
+    krName: "",
+  };
   const [pokeType, setPokeType] = useState([]);
   const [pokemonID, setPokemonID] = useState();
   const [speciesUrl, setSpeciesUrl] = useState();
@@ -45,6 +52,8 @@ function PoketmonCard({ url, imgStyle, pokeMonName, style }) {
                     species_url={speciesUrl}
                     pokeMonName={pokeMonName}
                     style={style.krName}
+                    setTotalPokemons={setTotalPokemons}
+                    pokeInfo={pokeInfo}
                   ></PokemonKRName>
                 ) : null}
                 <div className="flex pl-5">

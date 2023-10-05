@@ -17,7 +17,10 @@ function TypePokemons() {
   const { data } = useAPI(["pokemonType", id], fetch);
   const [pokemonArray, setPokemonArray] = useState();
   const [pokemons, setPokemons] = useState();
+  const [totalPokemons, setTotalPokemons] = useState([]);
   let [count, setCount] = useState(0);
+  let [input, setInput] = useState(null);
+  let [inputResult, setInputResult] = useState(["1"]);
 
   const handleScroll = throttle(() => {
     const scrollHeight = document.documentElement.scrollHeight;
@@ -36,6 +39,8 @@ function TypePokemons() {
       const arr = division(data.pokemon, 20);
       setPokemonArray(arr);
     }
+    setTotalPokemons([]);
+    setInput(null);
     // 처음 받아온 배열을 20개씩 작은 배열로 분할하여 pokemonArray에 저장
   }, [data]);
 
@@ -55,12 +60,31 @@ function TypePokemons() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-  console.log(pokemonArray);
+  // console.log(pokemonArray);
+  // console.log(totalPokemons);
+
+  // 검색창 인풋 제어
+  useEffect(() => {
+    if (totalPokemons.length !== 0) {
+      console.log(totalPokemons);
+      setInputResult(
+        totalPokemons.filter((pokemon) => pokemon.krName.includes(input))
+      );
+    }
+  }, [input]);
+
   return (
     <>
       <Navigation />
+      <input
+        type="text"
+        className="border-2"
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
+      ></input>
       <div className="flex flex-wrap w-4/5 m-0 m-auto">
-        {pokemons !== undefined
+        {pokemons !== undefined && input === null
           ? pokemons.map((pokemon, i) => {
               return (
                 <PoketmonCard
@@ -69,10 +93,21 @@ function TypePokemons() {
                   imgStyle={"w-64 border-2"}
                   pokeMonName={pokemon.pokemon.name}
                   style={style}
+                  setTotalPokemons={setTotalPokemons}
                 ></PoketmonCard>
               );
             })
-          : null}
+          : inputResult.map((reuslt, i) => {
+              return (
+                <PoketmonCard
+                  url={reuslt.url}
+                  imgStyle={"w-64 border-2"}
+                  pokeMonName={reuslt.pokeMonName}
+                  style={style}
+                  key={i}
+                ></PoketmonCard>
+              );
+            })}
       </div>
     </>
   );
