@@ -71,6 +71,10 @@ function TypePokemons() {
         totalPokemons.filter((pokemon) => pokemon.krName.includes(input))
       );
     }
+    if (input === "") {
+      setInput(null);
+      setTotalPokemons([]);
+    }
   }, [input]);
 
   return (

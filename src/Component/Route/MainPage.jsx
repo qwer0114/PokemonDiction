@@ -43,8 +43,6 @@ function Pokemons() {
     } else {
       setPokemons(data?.results);
     }
-    setTotalPokemons([]);
-    setInput(null);
   }, [data]);
 
   // input 변경 감지
@@ -54,6 +52,10 @@ function Pokemons() {
       setInputResult(
         totalPokemons.filter((pokemon) => pokemon.krName.includes(input))
       );
+    }
+    if (input === "") {
+      setInput(null);
+      setTotalPokemons([]);
     }
   }, [input]);
 
